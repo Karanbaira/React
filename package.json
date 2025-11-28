@@ -1,0 +1,36 @@
+{
+  "name": "react",
+  "version": "1.0.0",
+  "description": "jogi to jogi hi rei",
+  "keywords": [
+    "jogi",
+    "jogi420"
+  ],
+  "homepage": "https://github.com/Karanbaira/React#readme",
+  "bugs": {
+    "url": "https://github.com/Karanbaira/React/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Karanbaira/React.git"
+  },
+  "license": "ISC",
+  "author": "jogi ji",
+  "type": "commonjs",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "paecel build index.html",
+    "test": "jogi"
+  },
+  "devDependencies": {
+    "parcel": "^2.16.1"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "browserlist": [
+    "last 2 versions"
+    
+  ]
+}

@@ -1,3 +1,78 @@
-#child{
-    color: rgb(248, 143, 255);
+.header{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #48210d;
+    color: #48210d;
+}
+
+.logo{
+    height: 100px;
+}
+.nav-items > ul {
+ display: flex;
+}
+
+.nav-items > ul > li{
+    padding: 10px;
+    margin: 10px;
+    font-size: medium;
+    font-weight: 500;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    list-style: none;
+}
+.body{
+    color: #48210d;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+}
+
+.res-container{
+    display: flex;
+    flex-wrap: wrap;
+    
+    padding: 100px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.res-card {
+    padding: 20px;
+    width: 200px;
+    height: 300px;
+    margin: 10px;
+   
+}
+.res-card:hover{
+    cursor: pointer;
+    border: 1px solid #48210d;
+}
+.res-logo {
+    width: 100%;
+}
+.res-info{
+    display: flex;
+    justify-content: space-around;
+}
+.res-info{
+    padding: 2px;
+    font-size: small;
+    font-weight: 200;
+
+}
+
+
+.filter-btn {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background: transparent;
+    color: #48210d;
+    border: 1px solid #48210d;
+    cursor: pointer;
+
+}
+
+.filter-btn:hover{
+    background: #48210d;
+    color: aliceblue;
+    transition: .5s;
 }
