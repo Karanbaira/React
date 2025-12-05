@@ -1,34 +1,31 @@
 import { CDN_URL } from "../utils/constants";
 
-const RestaurantCard = (props) => {
-  const { resData} = props;
-
+const RestaurantCard = ({ resData }) => {
   const {
     name,
-    avgRating,
-    cuisine,
+    cloudinaryImageId,
+    cuisines = [],
     costForTwo,
-    deliverTime,
+    avgRating,
+    sla,
+  } = resData.info;
 
-  } = resData?.data;
-
-  return(
+  return (
     <div className="res-card">
-      <img 
-      className="res-logo"
-      alt="res-logo"
-      src={CDN_URL}/>
+      <img
+        className="res-logo"
+        src={CDN_URL + cloudinaryImageId}
+        alt={name}
+      />
       <h3>{name}</h3>
+      <h4>{cuisines.join(", ")}</h4>
       <div className="res-info">
-        <h4>{cuisine}</h4>
-      <h4>{avgRating}⭐</h4>
-      <h4>{deliverTime} minutes</h4>
+        <span>{avgRating} ⭐</span>
+        <span>{sla?.deliveryTime} mins</span>
       </div>
-      <h4>{costForTwo } For Two</h4>
-      
+      <h4>{costForTwo}</h4>
     </div>
   );
 };
-
 
 export default RestaurantCard;

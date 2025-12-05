@@ -1,78 +1,652 @@
-.header{
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #48210d;
-    color: #48210d;
+/* =========================================
+   1. FONTS & DESIGN TOKENS
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+:root {
+  /* --- COLOR PALETTE: "Midnight & Sunset" --- */
+  --bg-deep: #0f172a;       /* Deepest Navy */
+  --bg-dark: #1e293b;       /* Card Background */
+  --primary: #f59e0b;       /* Gold/Amber */
+  --primary-glow: rgba(245, 158, 11, 0.4);
+  --accent: #ec4899;        /* Hot Pink (for gradients) */
+  --secondary: #6366f1;     /* Indigo (for gradients) */
+  
+  --text-main: #f8fafc;     /* Almost White */
+  --text-muted: #94a3b8;    /* Muted Blue-Grey */
+  
+  --white-glass: rgba(255, 255, 255, 0.05);
+  --white-glass-hover: rgba(255, 255, 255, 0.1);
+  --border-glass: rgba(255, 255, 255, 0.1);
+
+  --shadow-neon: 0 0 20px var(--primary-glow);
+  --shadow-float: 0 10px 40px -10px rgba(0,0,0,0.5);
+  
+  /* --- ANIMATION VARIABLES --- */
+  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.logo{
-    height: 100px;
-}
-.nav-items > ul {
- display: flex;
-}
-
-.nav-items > ul > li{
-    padding: 10px;
-    margin: 10px;
-    font-size: medium;
-    font-weight: 500;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    list-style: none;
-}
-.body{
-    color: #48210d;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 500;
+/* =========================================
+   2. GLOBAL RESET & ANIMATED BACKGROUND
+   ========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none; /* Custom focus styles used instead */
 }
 
-.res-container{
-    display: flex;
-    flex-wrap: wrap;
-    
-    padding: 100px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-.res-card {
-    padding: 20px;
-    width: 200px;
-    height: 300px;
-    margin: 10px;
-   
-}
-.res-card:hover{
-    cursor: pointer;
-    border: 1px solid #48210d;
-}
-.res-logo {
-    width: 100%;
-}
-.res-info{
-    display: flex;
-    justify-content: space-around;
-}
-.res-info{
-    padding: 2px;
-    font-size: small;
-    font-weight: 200;
-
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { 
+  background: linear-gradient(to bottom, var(--primary), var(--accent)); 
+  border-radius: 99px; 
+  border: 2px solid var(--bg-deep);
 }
 
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  /* DYNAMIC BACKGROUND GRADIENT */
+  background: radial-gradient(circle at top left, #1e1b4b, transparent 40%),
+              radial-gradient(circle at bottom right, #3f0f28, transparent 40%),
+              var(--bg-deep);
+}
 
+/* Floating Blobs in Background */
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: var(--secondary);
+  filter: blur(150px);
+  opacity: 0.2;
+  border-radius: 50%;
+  z-index: -1;
+  animation: floatBlob 20s infinite alternate ease-in-out;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -20%;
+  right: -10%;
+  width: 40vw;
+  height: 40vw;
+  background: var(--accent);
+  filter: blur(150px);
+  opacity: 0.2;
+  border-radius: 50%;
+  z-index: -1;
+  animation: floatBlob 15s infinite alternate-reverse ease-in-out;
+}
+
+#root {
+  max-width: 1400px; /* Ultra-wide layout */
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* =========================================
+   3. HEADER (Floating Glass Bar) - UNTOUCHED
+   ========================================= */
+.header {
+  margin-top: 30px;
+  padding: 18px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  /* GLASS EFFECT */
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: 24px;
+  
+  position: sticky;
+  top: 20px;
+  z-index: 999;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  animation: slideDown 0.8s var(--ease-elastic);
+}
+
+.logo-container .logo {
+  width: 60px;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+  transition: transform 0.4s var(--ease-elastic);
+}
+.logo-container .logo:hover {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+.nav-items ul {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-items li {
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.nav-items li:hover {
+  color: var(--text-main);
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.nav-items li::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.nav-items li:hover::after {
+  width: 100%;
+}
+
+/* GLOWING LOGIN BUTTON */
+.login {
+  padding: 10px 32px;
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid var(--primary);
+  border-radius: 99px;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+}
+
+.login::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.login:hover {
+  background: var(--primary);
+  color: var(--bg-deep);
+  box-shadow: 0 0 20px var(--primary);
+  transform: translateY(-2px);
+}
+
+.login:hover::before {
+  left: 100%;
+}
+
+/* =========================================
+   4. BODY, HERO & FILTERS - UNTOUCHED
+   ========================================= */
+.body {
+  margin-top: 60px;
+  animation: fadeIn 1s ease-out;
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+/* NEON SEARCH BAR */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg-dark);
+  padding: 8px 10px;
+  border-radius: 99px;
+  border: 1px solid var(--border-glass);
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+  transition: all 0.3s;
+  width: 450px;
+}
+
+.search:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.3), inset 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.search-box {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  color: var(--text-main);
+  font-size: 1rem;
+}
+
+.search-box::placeholder {
+  color: rgba(255,255,255,0.3);
+}
+
+.search button {
+  background: linear-gradient(135deg, var(--primary), #d97706);
+  border: none;
+  padding: 10px 28px;
+  border-radius: 99px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.search button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--primary);
+}
+
+/* Filter Button */
 .filter-btn {
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    background: transparent;
-    color: #48210d;
-    border: 1px solid #48210d;
-    cursor: pointer;
-
+  background: rgba(255,255,255,0.05);
+  color: var(--text-main);
+  border: 1px solid var(--border-glass);
+  padding: 12px 30px;
+  border-radius: 99px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
 }
 
-.filter-btn:hover{
-    background: #48210d;
-    color: aliceblue;
-    transition: .5s;
+.filter-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);
+  transform: translateY(-2px);
+}
+
+/* =========================================
+   5. 3D RESTAURANT CARDS - UPDATED FONT
+   ========================================= */
+.res-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 40px;
+  perspective: 1000px;
+}
+
+.res-card {
+  background: var(--bg-dark);
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-float);
+  transition: all 0.4s var(--ease-elastic);
+  cursor: pointer;
+  
+  /* Entry Animation */
+  animation: fadeInUp 0.8s backwards;
+}
+
+.res-card:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 2px var(--primary);
+  border-color: var(--primary);
+  z-index: 10;
+}
+
+/* IMAGE ZOOM */
+.res-logo {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  filter: brightness(0.9);
+}
+
+.res-card:hover .res-logo {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+}
+
+/* Content Area */
+.res-card h3 {
+  /* CHANGED: Now using Plus Jakarta Sans (like Nav) instead of Playfair */
+  font-family: 'Plus Jakarta Sans', sans-serif; 
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 16px 20px 6px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.res-card h4 {
+  /* CHANGED: Matched Font */
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0 20px 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Info Bar */
+.res-info {
+  background: rgba(0,0,0,0.3);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-glass);
+  backdrop-filter: blur(5px);
+}
+
+/* Star Rating Badge */
+.res-info span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #059669, #10b981);
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700; /* Bolder for modern look */
+  color: white;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+}
+
+.res-info span:last-child {
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+/* =========================================
+   6. MENU PAGE
+   ========================================= */
+.menu-page {
+  max-width: 900px;
+  margin: 0 auto;
+  animation: slideUp 0.8s var(--ease-elastic);
+}
+
+.restaurant-summary {
+  background: linear-gradient(160deg, var(--bg-dark), #2d3748);
+  border-radius: 30px;
+  padding: 40px;
+  text-align: center;
+  border: 1px solid var(--border-glass);
+  box-shadow: var(--shadow-float);
+  margin-bottom: 50px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative glow behind summary */
+.restaurant-summary::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 10%, transparent 10.5%);
+  background-size: 20px 20px;
+  opacity: 0.5;
+  transform: rotate(30deg);
+}
+
+.restaurant-summary h2 {
+  /* Updated to match card style */
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, #fff, #cbd5e1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+}
+
+.restaurant-meta {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  position: relative;
+}
+
+/* Menu Items */
+.menu-section-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-left: 5px solid var(--primary);
+  padding-left: 20px;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(30, 41, 59, 0.7);
+  margin-bottom: 20px;
+  padding: 24px 30px;
+  border-radius: 20px;
+  border: 1px solid var(--border-glass);
+  transition: all 0.3s;
+}
+
+.menu-item:hover {
+  background: rgba(30, 41, 59, 1);
+  transform: scale(1.02) translateX(10px);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
+}
+
+.menu-item-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-main);
+}
+
+.menu-item-price {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.menu-item-rating {
+  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: var(--primary);
+  margin-top: 5px;
+  display: inline-block;
+}
+
+/* =========================================
+   7. SHIMMER (Loading Skeleton)
+   ========================================= */
+.shimmer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 40px;
+}
+
+.shimmer-card {
+  height: 300px;
+  background: var(--bg-dark);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-glass);
+}
+
+.shimmer-card::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  animation: shimmer 1.5s infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
+/* =========================================
+   8. ABOUT & CONTACT PAGES
+   ========================================= */
+.page {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 4rem;
+  /* Updated to Sans serif */
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: scaleIn 0.8s var(--ease-elastic);
+}
+
+.page-subtitle {
+  font-size: 1.5rem;
+  color: var(--text-muted);
+}
+
+.user-card {
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 40px 60px;
+  border-radius: 30px;
+  border: 1px solid var(--border-glass);
+  margin-top: 40px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  text-align: left;
+  min-width: 400px;
+}
+
+.user-card h2 { font-size: 2.5rem; margin-bottom: 10px; color: var(--text-main); }
+.user-card h3 { color: var(--text-muted); font-size: 1.2rem; }
+.user-card h4 { 
+  margin-top: 20px; 
+  color: var(--accent); 
+  font-weight: 700; 
+  font-size: 1.1rem;
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+}
+.user-card h4::before {
+  content: '';
+  display: inline-block;
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* =========================================
+   9. ANIMATIONS
+   ========================================= */
+@keyframes floatBlob {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(50px, 50px) scale(1.1); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(100px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* =========================================
+   10. RESPONSIVE DESIGN
+   ========================================= */
+@media (max-width: 768px) {
+  #root { padding: 0 20px; }
+  
+  .header {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .nav-items ul {
+    gap: 20px;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .search { width: 100%; }
+  
+  .filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .res-container { grid-template-columns: 1fr; }
+  
+  .page-title { font-size: 2.5rem; }
 }
